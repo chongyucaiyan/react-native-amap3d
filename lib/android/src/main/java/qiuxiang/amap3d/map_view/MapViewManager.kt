@@ -13,6 +13,7 @@ import qiuxiang.amap3d.toLatLng
 @Suppress("unused")
 internal class MapViewManager : ViewGroupManager<MapView>() {
   private val commands = mapOf(
+    "includePoints" to { view: MapView, args: ReadableArray? -> view.includePoints(args) },
     "moveCamera" to { view: MapView, args: ReadableArray? -> view.moveCamera(args) },
     "call" to { view: MapView, args: ReadableArray? -> view.call(args) },
   )

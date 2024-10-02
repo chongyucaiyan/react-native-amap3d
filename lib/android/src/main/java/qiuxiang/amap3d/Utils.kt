@@ -16,6 +16,10 @@ import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.views.imagehelper.ImageSource
 
+fun Double.toPx(): Int {
+  return (this * Resources.getSystem().displayMetrics.density).toInt()
+}
+
 fun Float.toPx(): Int {
   return (this * Resources.getSystem().displayMetrics.density).toInt()
 }

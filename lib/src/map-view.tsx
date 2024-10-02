@@ -6,7 +6,7 @@ import {
   ViewProps,
 } from "react-native";
 import Component from "./component";
-import { CameraPosition, LatLng, LatLngBounds, MapPoi, MapType, Point } from "./types";
+import { CameraPosition, IncludePointsOption, LatLng, LatLngBounds, MapPoi, MapType, Point } from "./types";
 
 export interface CameraEvent {
   cameraPosition: CameraPosition;
@@ -168,6 +168,13 @@ export default class extends Component<MapViewProps> {
   ref?: (React.Component<MapViewProps> & NativeMethods) | null;
   state = { loaded: false };
   callbackMap: { [key: number]: (data: any) => void } = {};
+
+  /**
+   * 缩放视野展示所有经纬度
+   */
+  includePoints(option: IncludePointsOption) {
+    this.invoke('includePoints', [option])
+  }
 
   /**
    * 移动视角

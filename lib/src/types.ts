@@ -107,6 +107,21 @@ export interface Location extends LatLng {
 }
 
 /**
+ * 要显示在可视区域内的坐标点信息
+ */
+export interface IncludePointsOption {
+  /** 
+   * 要显示在可视区域内的坐标点列表 
+   */
+  points: LatLng[]
+
+  /** 
+   * 坐标点形成的矩形边缘到地图边缘的距离，单位dp。格式为[上,右,下,左]
+   */
+  padding?: number[]
+}
+
+/**
  * 地图类型
  */
 export enum MapType {

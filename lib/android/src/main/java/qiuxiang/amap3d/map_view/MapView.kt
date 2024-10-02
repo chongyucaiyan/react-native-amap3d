@@ -6,6 +6,8 @@ import com.amap.api.maps.AMap
 import com.amap.api.maps.CameraUpdateFactory
 import com.amap.api.maps.TextureMapView
 import com.amap.api.maps.model.CameraPosition
+import com.amap.api.maps.model.LatLng
+import com.amap.api.maps.model.LatLngBounds
 import com.amap.api.maps.model.Marker
 import com.amap.api.maps.model.MyLocationStyle
 import com.facebook.react.bridge.Arguments
@@ -17,6 +19,7 @@ import qiuxiang.amap3d.getFloat
 import qiuxiang.amap3d.toJson
 import qiuxiang.amap3d.toLatLng
 import qiuxiang.amap3d.toPoint
+import qiuxiang.amap3d.toPx
 
 @SuppressLint("ViewConstructor")
 class MapView(context: ThemedReactContext) : TextureMapView(context) {
@@ -126,6 +129,33 @@ class MapView(context: ThemedReactContext) : TextureMapView(context) {
   private val animateCallback = object : AMap.CancelableCallback {
     override fun onCancel() {}
     override fun onFinish() {}
+  }
+
+  fun includePoints(args: ReadableArray?) {
+    val option = args?.getMap(0)
+
+    val builder = LatLngBounds.Builder()
+    val points = option?.getArray("points")
+    val size = points?.size() ?: 0
+    if (size > 0) {
+      for (index in 0 until size) {
+        val latLng = points?.getMap(index)
+        if (latLng != null && latLng.hasKey("latitude") && latLng.hasKey("longitude")) {
+          val latitude = latLng.getDouble("latitude")
+          val longitude = latLng.getDouble("longitude")
+          builder.include(LatLng(latitude, longitude))
+        }
+      }
+    }
+
+    val padding = option?.getArray("padding")
+    val paddingLeft = (padding?.getDouble(3) ?: 0.0).toPx()
+    val paddingRight = (padding?.getDouble(1) ?: 0.0).toPx()
+    val paddingTop = (padding?.getDouble(0) ?: 0.0).toPx()
+    val paddingBottom = (padding?.getDouble(2) ?: 0.0).toPx()
+
+    val cameraUpdate = CameraUpdateFactory.newLatLngBoundsRect(builder.build(), paddingLeft, paddingRight, paddingTop, paddingBottom)
+    map.animateCamera(cameraUpdate, animateCallback)
   }
 
   fun moveCamera(args: ReadableArray?) {
