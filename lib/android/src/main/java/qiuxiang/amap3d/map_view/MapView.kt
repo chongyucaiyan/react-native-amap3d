@@ -1,6 +1,7 @@
 package qiuxiang.amap3d.map_view
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.View
 import com.amap.api.maps.AMap
 import com.amap.api.maps.CameraUpdateFactory
@@ -36,6 +37,8 @@ class MapView(context: ThemedReactContext) : TextureMapView(context) {
 
     locationStyle = MyLocationStyle()
     locationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER)
+    locationStyle.radiusFillColor(Color.argb(0, 0, 0, 0))
+    locationStyle.strokeColor(Color.argb(0, 0, 0, 0))
     map.myLocationStyle = locationStyle
 
     map.setOnMapLoadedListener { emit(id, "onLoad") }
