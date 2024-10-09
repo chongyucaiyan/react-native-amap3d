@@ -41,7 +41,13 @@ class MapView(context: ThemedReactContext) : TextureMapView(context) {
     locationStyle.strokeColor(Color.argb(0, 0, 0, 0))
     map.myLocationStyle = locationStyle
 
-    map.setOnMapLoadedListener { emit(id, "onLoad") }
+    map.setOnMapLoadedListener {
+      map.uiSettings.isCompassEnabled = false
+      map.uiSettings.isScaleControlsEnabled = false
+      map.uiSettings.isZoomControlsEnabled = false
+      map.uiSettings.isRotateGesturesEnabled = false
+      emit(id, "onLoad")
+    }
     map.setOnMapClickListener { latLng -> emit(id, "onPress", latLng.toJson()) }
     map.setOnPOIClickListener { poi -> emit(id, "onPressPoi", poi.toJson()) }
     map.setOnMapLongClickListener { latLng -> emit(id, "onLongPress", latLng.toJson()) }
